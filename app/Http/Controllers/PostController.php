@@ -6,6 +6,7 @@ use App\Models\Post;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class PostController extends Controller
 {
@@ -92,8 +93,10 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return Redirect::route('posts.index')->with('success', 'Post supprimé avec succès.');
     }
 }
