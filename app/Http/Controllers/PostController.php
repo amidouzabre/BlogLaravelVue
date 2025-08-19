@@ -72,7 +72,21 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:posts,slug' .$post->id,
+            'excerpt' => 'nullable|string',
+            'content' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+        $data['user_id'] = $user->id;
+
+        Post::update($data);
+
+        return redirect()->route('posts.index')
+            ->with('success', 'Post create !');
+        
     }
 
     /**
