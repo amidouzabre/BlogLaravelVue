@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -11,7 +13,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::latest()->paginate(10);
+        return Inertia::render('Posts/Index', [
+            'posts' => $posts
+        ]);
     }
 
     /**
@@ -33,9 +38,9 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-        //
+        //return inertia::render('Articles/Show', ['post' => $post]);
     }
 
     /**
