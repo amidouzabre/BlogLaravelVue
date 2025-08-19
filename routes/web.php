@@ -20,7 +20,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Route publique pour lecture
-Route::get('/posts/{article:slug}', [PostController::class, 'show'])
+Route::get('/posts/{post:slug}', [PostController::class, 'show'])
     ->name('posts.show');
 
 require __DIR__.'/settings.php';
