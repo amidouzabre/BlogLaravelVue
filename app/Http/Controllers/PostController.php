@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -32,8 +33,21 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:articles,slug',
+            'excerpt' => 'nullable|string',
+            'content' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+        $data['user_id'] = $user->id;
+
+        Post::create($data);
+
+        return redirect()->route('posts.index')
+            ->with('success', 'Post create !');
+        }
 
     /**
      * Display the specified resource.
